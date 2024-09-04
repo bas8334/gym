@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+from datetime import datetime
 
 # Titel van de app
 st.title('Data verzenden naar een Webhook')
@@ -11,6 +12,12 @@ num_cols = 4
 
 # Creëer een lege DataFrame met de juiste afmetingen
 data = pd.DataFrame('', index=range(num_rows), columns=[f'Kolom {i+1}' for i in range(num_cols)])
+
+# Naam_sporter invoerveld
+naam_sporter = st.text_input('Naam van de sporter', value='')
+
+# Haal de huidige datum op in de vorm dd-mm-yyyy
+datum_vandaag = datetime.now().strftime('%d-%m-%Y')
 
 # Maak invoervelden voor elke cel in de tabel
 for i in range(num_rows):
@@ -25,6 +32,14 @@ webhook_url = st.text_input('Voer de Webhook URL in', 'https://example.com/webho
 if st.button('Verzend Data'):
     # Converteer de DataFrame naar een lijst van dicts (rijen)
     payload = data.to_dict(orient='records')
+    
+    # Voeg Naam_sporter en datum toe aan het payload
+    extra_data = {
+        'Naam_sporter': naam_sporter if naam_sporter else None,  # Stuur Null als de naam_sporter leeg is
+        'Datum': datum_vandaag
+    }
+    
+    payload.append(extra_data)
     
     # Verstuur de data naar de webhook
     try:
