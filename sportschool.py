@@ -22,11 +22,11 @@ naam_sporter = st.text_input('Naam van de sporter', value='')
 # Haal de huidige datum op in de vorm dd-mm-yyyy
 datum_vandaag = datetime.now().strftime('%d-%m-%Y')
 
-# Maak invoervelden voor elke cel in de tabel
+# Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
     cols = st.columns(num_cols)
     for j in range(num_cols):
-        data.iloc[i, j] = cols[j].text_input(f'Rij {i+1} - {kolom_namen[j]}', value='', key=f'input_{i}_{j}')
+        data.iloc[i, j] = cols[j].text_input(f'{kolom_namen[j]}', value='', key=f'input_{i}_{j}')
 
 # URL van de webhook
 webhook_url = st.text_input('Voer de Webhook URL in', 'https://example.com/webhook')
