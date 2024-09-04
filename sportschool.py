@@ -30,26 +30,28 @@ webhook_url = st.text_input('Voer de Webhook URL in', 'https://example.com/webho
 
 # Verzendknop
 if st.button('Verzend Data'):
-    # Converteer de DataFrame naar een lijst van dicts (rijen)
-    payload = data.to_dict(orient='records')
-    
-    # Voeg Naam_sporter en datum toe aan het payload
-    extra_data = {
-        'Naam_sporter': naam_sporter if naam_sporter else None,  # Stuur Null als de naam_sporter leeg is
-        'Datum': datum_vandaag
-    }
-    
-    payload.append(extra_data)
-    
-    # Verstuur de data naar de webhook
-    try:
-        response = requests.post(webhook_url, json=payload)
+    # Filter de rijen die leeg zijn
+    filtered_data = data[(data != '').any(axis=1)].copy()
+
+    # Voeg Naam_sporter en Datum kolommen toe aan de gefilterde DataFrame
+    filtered_data['Naam_sporter'] = naam_sporter if naam_sporter else None
+    filtered_data['Datum'] = datum_vandaag
+
+    # Verzend alleen als er gegevens zijn
+    if not filtered_data.empty:
+        payload = filtered_data.to_dict(orient='records')
+
+        # Verstuur de data naar de webhook
+        try:
+            response = requests.post(webhook_url, json=payload)
+            
+            # Toon de response status
+            if response.status_code == 200:
+                st.success('Data succesvol verzonden! 😊')
+            else:
+                st.error(f'Er is iets misgegaan. Statuscode: {response.status_code}, Response: {response.text}')
         
-        # Toon de response status
-        if response.status_code == 200:
-            st.success('Data succesvol verzonden! 😊')
-        else:
-            st.error(f'Er is iets misgegaan. Statuscode: {response.status_code}, Response: {response.text}')
-    
-    except requests.exceptions.RequestException as e:
-        st.error(f'Verzoek mislukt: {e}')
+        except requests.exceptions.RequestException as e:
+            st.error(f'Verzoek mislukt: {e}')
+    else:
+        st.warning('Er is geen data om te verzenden.')
