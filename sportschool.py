@@ -33,8 +33,11 @@ webhook_url = st.text_input('Voer de Webhook URL in', 'https://example.com/webho
 
 # Verzendknop
 if st.button('Verzend Data'):
-    # Filter de rijen die leeg zijn
-    filtered_data = data[(data != '').any(axis=1)].copy()
+    # Vervang lege waarden met None (Python's equivalent van Null)
+    data = data.applymap(lambda x: None if x == '' else x)
+    
+    # Filter de rijen die ten minste één waarde bevatten
+    filtered_data = data.dropna(how='all').copy()
 
     # Voeg Naam_sporter en Datum kolommen toe aan de gefilterde DataFrame
     filtered_data['Naam_sporter'] = naam_sporter if naam_sporter else None
