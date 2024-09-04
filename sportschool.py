@@ -27,10 +27,14 @@ if st.button('Verzend Data'):
     payload = data.to_dict(orient='records')
     
     # Verstuur de data naar de webhook
-    response = requests.post(webhook_url, json=payload)
+    try:
+        response = requests.post(webhook_url, json=payload)
+        
+        # Toon de response status
+        if response.status_code == 200:
+            st.success('Data succesvol verzonden! 😊')
+        else:
+            st.error(f'Er is iets misgegaan. Statuscode: {response.status_code}, Response: {response.text}')
     
-    # Toon de response status
-    if response.status_code == 200:
-        st.success('Data succesvol verzonden! 😊')
-    else:
-        st.error(f'Er is iets misgegaan. Statuscode: {response.status_code}')
+    except requests.exceptions.RequestException as e:
+        st.error(f'Verzoek mislukt: {e}')
