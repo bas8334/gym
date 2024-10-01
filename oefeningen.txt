@@ -1,0 +1,15 @@
+Squat
+Deadlift
+Bench Press
+Overhead Press
+Barbell Row
+Pull-Up
+Push-Up
+Lunges
+Bicep Curl
+Tricep Dip
+Plank
+Leg Raise
+Russian Twist
+Burpees
+Jumping Jacks
