@@ -19,6 +19,22 @@ data = pd.DataFrame('', index=range(num_rows), columns=kolom_namen)
 # Naam_sporter invoerveld
 naam_sporter = st.text_input('Naam van de sporter', value='')
 
+# Invoerveld om een nieuwe oefening toe te voegen
+nieuwe_oefening = st.text_input('Voeg een nieuwe oefening toe aan de lijst')
+
+# Knop om de oefening op te slaan
+if st.button('Sla oefening op'):
+    if nieuwe_oefening:
+        try:
+            # Voeg de nieuwe oefening toe aan het bestand oefeningen.txt
+            with open('oefeningen.txt', 'a') as f:
+                f.write(f'\n{nieuwe_oefening}')
+            st.success(f'Oefening "{nieuwe_oefening}" is toegevoegd!')
+        except Exception as e:
+            st.error(f'Fout bij het opslaan van de oefening: {e}')
+    else:
+        st.warning('Voer een oefening in om op te slaan.')
+
 # Haal de huidige datum op in de vorm dd-mm-yyyy
 datum_vandaag = datetime.now().strftime('%d-%m-%Y')
 
