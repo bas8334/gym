@@ -34,7 +34,7 @@ except FileNotFoundError:
 for i in range(num_rows):
     cols = st.columns(num_cols)
     # Maak de eerste kolom een dropdown voor de oefening
-    data.iloc[i, 0] = cols[0].selectbox('Oefening', opties=oefeningen, key=f'oefening_{i}')
+    data.iloc[i, 0] = cols[0].selectbox('Oefening', options=oefeningen, key=f'oefening_{i}')
     
     # Maak tekstinvoer voor de sets
     for j in range(1, num_cols):
