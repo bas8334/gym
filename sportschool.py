@@ -7,7 +7,7 @@ from datetime import datetime
 st.title('Data verzenden naar een Webhook')
 
 # Aantal rijen en kolommen
-num_rows = 15
+num_rows = 10
 num_cols = 6
 
 # Definieer de kolomnamen
