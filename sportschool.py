@@ -7,14 +7,14 @@ from datetime import datetime
 st.title('Data verzenden naar een Webhook')
 
 # Aantal rijen en kolommen
-num_rows = 10
+num_rows = 10  # Aangepast van 15 naar 10
 num_cols = 6
 
 # Definieer de kolomnamen
 kolom_namen = ['Oefening', 'Set 1 (#xKG)', 'Set 2 (#xKG)', 'Set 3 (#xKG)', 'Set 4 (#xKG)', 'Set 5 (#xKG)']
 
-# Creëer een lege DataFrame met de juiste kolomnamen
-data = pd.DataFrame('', index=range(num_rows), columns=kolom_namen)
+# Creëer een lege DataFrame met de juiste kolomnamen en het juiste aantal rijen
+data = pd.DataFrame('', index=range(num_rows), columns=kolom_namen)  # Aangepast naar num_rows
 
 # Naam_sporter invoerveld
 naam_sporter = st.text_input('Naam van de sporter', value='')
@@ -50,7 +50,7 @@ except FileNotFoundError:
 oefeningen.insert(0, "")
 
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
-for i in range(num_rows):
+for i in range(num_rows):  # Dit beperkt de invoervelden tot 10 rijen
     cols = st.columns(num_cols)
     # Maak de eerste kolom een dropdown voor de oefening
     data.iloc[i, 0] = cols[0].selectbox('Oefening', options=oefeningen, key=f'oefening_{i}')
