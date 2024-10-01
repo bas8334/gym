@@ -30,6 +30,9 @@ except FileNotFoundError:
     st.error('Het bestand oefeningen.txt is niet gevonden.')
     oefeningen = []
 
+# Voeg een lege optie toe voor de dropdown
+oefeningen.insert(0, "")
+
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
     cols = st.columns(num_cols)
@@ -48,8 +51,8 @@ if st.button('Verzend Data'):
     # Vervang lege strings ('') met None zodat ze als lege waarden worden behandeld
     data = data.applymap(lambda x: None if x == '' else x)
     
-    # Filter de rijen die ten minste één waarde bevatten (exclusief lege strings)
-    filtered_data = data.dropna(how='all').copy()
+    # Filter de rijen waarbij de kolom 'Oefening' niet leeg is
+    filtered_data = data[data['Oefening'].notna()].copy()
 
     # Voeg Naam_sporter en Datum kolommen toe aan de gefilterde DataFrame
     filtered_data['Naam_sporter'] = naam_sporter if naam_sporter else None
