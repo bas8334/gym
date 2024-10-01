@@ -22,10 +22,22 @@ naam_sporter = st.text_input('Naam van de sporter', value='')
 # Haal de huidige datum op in de vorm dd-mm-yyyy
 datum_vandaag = datetime.now().strftime('%d-%m-%Y')
 
+# Lees de lijst met oefeningen uit een kladblokbestand
+try:
+    with open('oefeningen.txt', 'r') as f:
+        oefeningen = [line.strip() for line in f.readlines()]
+except FileNotFoundError:
+    st.error('Het bestand oefeningen.txt is niet gevonden.')
+    oefeningen = []
+
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
     cols = st.columns(num_cols)
-    for j in range(num_cols):
+    # Maak de eerste kolom een dropdown voor de oefening
+    data.iloc[i, 0] = cols[0].selectbox('Oefening', opties=oefeningen, key=f'oefening_{i}')
+    
+    # Maak tekstinvoer voor de sets
+    for j in range(1, num_cols):
         data.iloc[i, j] = cols[j].text_input(f'{kolom_namen[j]}', value='', key=f'input_{i}_{j}')
 
 # URL van de webhook
