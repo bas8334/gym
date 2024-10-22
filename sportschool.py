@@ -74,8 +74,9 @@ naam_sporter = st.text_input('Naam van de sporter', value='')
 # Functie om oefeningen te filteren op basis van gebruikersinvoer
 def filter_oefeningen(input_text, oefeningen_list):
     if input_text:
-        return [oef for oef in oefeningen_list if oef.lower().startswith(input_text.lower())]
+        return [oef for oef in oefeningen_list if isinstance(oef, str) and oef.lower().startswith(input_text.lower())]
     return oefeningen_list
+
 
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
