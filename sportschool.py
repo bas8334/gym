@@ -22,7 +22,6 @@ def get_google_sheet_data(spreadsheet_id, sheet_name, api_key):
         # Converteer naar DataFrame, gebruik de eerste rij als headers
         if rows:
             df = pd.DataFrame(rows[1:], columns=rows[0])  # Gebruik de eerste rij als headers
-            #st.write("Kolommen in de DataFrame:", df.columns.tolist())  # Print de kolomnamen voor controle
             return df
         else:
             st.error("Geen data gevonden in de Google Sheet.")
@@ -135,6 +134,16 @@ if st.button('Verzend Data'):
     # Voeg Naam_sporter en Datum kolommen toe aan de gefilterde DataFrame
     filtered_data['Naam_sporter'] = naam_sporter if naam_sporter else None
     filtered_data['Datum'] = datetime.now().strftime('%d-%m-%Y')
+
+    # Hernoem de kolommen naar het gewenste formaat voor de API
+    rename_dict = {
+        'Set 1 (aantal x KG)': 'Set 1 (#xKG)',
+        'Set 2 (aantal x KG)': 'Set 2 (#xKG)',
+        'Set 3 (aantal x KG)': 'Set 3 (#xKG)',
+        'Set 4 (aantal x KG)': 'Set 4 (#xKG)',
+        'Set 5 (aantal x KG)': 'Set 5 (#xKG)',
+    }
+    filtered_data.rename(columns=rename_dict, inplace=True)
 
     # Verzend alleen als er gegevens zijn
     if not filtered_data.empty:
