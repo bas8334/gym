@@ -38,6 +38,20 @@ def get_unique_oefeningen(df):
     else:
         return []
 
+# Functie om de meest recente regel op te halen voor een specifieke oefening
+def get_last_entry_for_exercise(df, exercise):
+    # Filter op de specifieke oefening
+    oefening_df = df[df['Oefening'] == exercise]
+    
+    if not oefening_df.empty:
+        # Converteer de Datum kolom naar datetime met het formaat 'dd-mm-yyyy'
+        oefening_df['Datum'] = pd.to_datetime(oefening_df['Datum'], format='%d-%m-%Y', errors='coerce')
+        
+        # Sorteer op datum (nieuwste eerst) en haal de meest recente rij op
+        meest_recente = oefening_df.sort_values('Datum', ascending=False).iloc[0]
+        return meest_recente
+    return None
+
 # Titel van de app
 st.title('Data verzenden naar een Webhook')
 
@@ -86,7 +100,18 @@ for i in range(num_rows):
         oefening_keuze = None  # Geen oefening geselecteerd
     else:
         oefening_keuze = selectie
-    
+        # Haal de meest recente sessie op voor de geselecteerde oefening
+        last_entry = get_last_entry_for_exercise(df, oefening_keuze)
+        
+        # Als er een vorige sessie is, laat de sets van de vorige keer zien
+        if last_entry is not None:
+            st.write(f"De vorige keer deed je '{oefening_keuze}' op {last_entry['Datum'].strftime('%d-%m-%Y')} met de volgende sets:")
+            for j in range(1, 6):
+                if pd.notna(last_entry[f'Set {j} (#xKG)']):
+                    st.write(f"Set {j}: {last_entry[f'Set {j} (#xKG)']}")
+        else:
+            st.write(f"Geen eerdere data gevonden voor '{oefening_keuze}'.")
+
     # Sla de geselecteerde of ingevoerde oefening op in de data
     data.iloc[i, 0] = oefening_keuze
     
