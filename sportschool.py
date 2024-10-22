@@ -71,11 +71,28 @@ data = pd.DataFrame('', index=range(num_rows), columns=kolom_namen)
 # Naam_sporter invoerveld
 naam_sporter = st.text_input('Naam van de sporter', value='')
 
+# Functie om oefeningen te filteren op basis van gebruikersinvoer
+def filter_oefeningen(input_text, oefeningen_list):
+    if input_text:
+        return [oef for oef in oefeningen_list if oef.lower().startswith(input_text.lower())]
+    return oefeningen_list
+
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
     cols = st.columns(num_cols)
-    # Maak de eerste kolom een dropdown voor de oefening met unieke oefeningen
-    data.iloc[i, 0] = cols[0].selectbox('Oefening', options=unique_oefeningen, key=f'oefening_{i}')
+    
+    # Gebruiker typt een oefening
+    oefening_input = cols[0].text_input(f'Oefening {i+1}', value='', key=f'oefening_input_{i}')
+    
+    # Filter de oefeningen op basis van de invoer van de gebruiker
+    filtered_oefeningen = filter_oefeningen(oefening_input, unique_oefeningen)
+    
+    # Als er gefilterde oefeningen zijn, laat ze zien in een selectbox, anders laat de gebruiker een nieuwe waarde invoeren
+    if len(filtered_oefeningen) > 1:
+        data.iloc[i, 0] = cols[0].selectbox('Kies een oefening', options=filtered_oefeningen, key=f'oefening_selectbox_{i}')
+    else:
+        # Gebruiker kan zijn eigen oefening invoeren
+        data.iloc[i, 0] = oefening_input
     
     # Maak tekstinvoer voor de sets
     for j in range(1, num_cols):
