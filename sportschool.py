@@ -22,6 +22,7 @@ def get_google_sheet_data(spreadsheet_id, sheet_name, api_key):
         # Converteer naar DataFrame, gebruik de eerste rij als headers
         if rows:
             df = pd.DataFrame(rows[1:], columns=rows[0])  # Gebruik de eerste rij als headers
+            st.write("Kolommen in de DataFrame:", df.columns.tolist())  # Print de kolomnamen voor controle
             return df
         else:
             st.error("Geen data gevonden in de Google Sheet.")
@@ -78,7 +79,7 @@ num_rows = 10
 num_cols = 6
 
 # Definieer de kolomnamen
-kolom_namen = ['Oefening', 'Set 1 (#xKG)', 'Set 2 (#xKG)', 'Set 3 (#xKG)', 'Set 4 (#xKG)', 'Set 5 (#xKG)']
+kolom_namen = ['Oefening', 'Set 1 (aantal x KG)', 'Set 2 (aantal x KG)', 'Set 3 (aantal x KG)', 'Set 4 (aantal x KG)', 'Set 5 (aantal x KG)']
 
 # Creëer een lege DataFrame met de juiste kolomnamen en het juiste aantal rijen
 data = pd.DataFrame('', index=range(num_rows), columns=kolom_namen)
@@ -107,8 +108,9 @@ for i in range(num_rows):
         if last_entry is not None:
             st.write(f"De vorige keer deed je '{oefening_keuze}' op {last_entry['Datum'].strftime('%d-%m-%Y')} met de volgende sets:")
             for j in range(1, 6):
-                if pd.notna(last_entry[f'Set {j} (#xKG)']):
-                    st.write(f"Set {j}: {last_entry[f'Set {j} (#xKG)']}")
+                kolom_naam = f'Set {j} (aantal x KG)'
+                if kolom_naam in last_entry and pd.notna(last_entry[kolom_naam]):
+                    st.write(f"Set {j}: {last_entry[kolom_naam]}")
         else:
             st.write(f"Geen eerdere data gevonden voor '{oefening_keuze}'.")
 
