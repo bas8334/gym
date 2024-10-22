@@ -22,7 +22,7 @@ def get_google_sheet_data(spreadsheet_id, sheet_name, api_key):
         # Converteer naar DataFrame, gebruik de eerste rij als headers
         if rows:
             df = pd.DataFrame(rows[1:], columns=rows[0])  # Gebruik de eerste rij als headers
-            st.write("Kolommen in de DataFrame:", df.columns.tolist())  # Print de kolomnamen voor controle
+            #st.write("Kolommen in de DataFrame:", df.columns.tolist())  # Print de kolomnamen voor controle
             return df
         else:
             st.error("Geen data gevonden in de Google Sheet.")
