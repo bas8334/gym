@@ -77,7 +77,6 @@ def filter_oefeningen(input_text, oefeningen_list):
         return [oef for oef in oefeningen_list if isinstance(oef, str) and oef.lower().startswith(input_text.lower())]
     return oefeningen_list
 
-
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
     cols = st.columns(num_cols)
@@ -88,12 +87,19 @@ for i in range(num_rows):
     # Filter de oefeningen op basis van de invoer van de gebruiker
     filtered_oefeningen = filter_oefeningen(oefening_input, unique_oefeningen)
     
-    # Als er gefilterde oefeningen zijn, laat ze zien in een selectbox, anders laat de gebruiker een nieuwe waarde invoeren
-    if len(filtered_oefeningen) > 1:
-        data.iloc[i, 0] = cols[0].selectbox('Kies een oefening', options=filtered_oefeningen, key=f'oefening_selectbox_{i}')
+    # Combineer het invulveld en de suggesties
+    if filtered_oefeningen:
+        oefening_keuze = cols[0].selectbox(
+            'Selecteer of bevestig je oefening',
+            options=[oefening_input] + filtered_oefeningen,  # Voegt de handmatige invoer toe als eerste optie
+            index=0,  # Standaard op de handmatige invoer
+            key=f'oefening_selectbox_{i}'
+        )
     else:
-        # Gebruiker kan zijn eigen oefening invoeren
-        data.iloc[i, 0] = oefening_input
+        oefening_keuze = oefening_input  # Als er geen suggesties zijn, gebruik de handmatige invoer
+    
+    # Sla de geselecteerde of ingevoerde oefening op in de data
+    data.iloc[i, 0] = oefening_keuze
     
     # Maak tekstinvoer voor de sets
     for j in range(1, num_cols):
