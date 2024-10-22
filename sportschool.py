@@ -57,7 +57,7 @@ else:
 
 # Voeg een lege optie toe om standaard geen oefening te selecteren
 unique_oefeningen.insert(0, "Selecteer een oefening")
-unique_oefeningen.append("Anders, namelijk...")
+unique_oefeningen.insert(1, "Anders, namelijk...")
 
 # Aantal rijen en kolommen
 num_rows = 10
@@ -95,7 +95,7 @@ for i in range(num_rows):
         data.iloc[i, j] = cols[j].text_input(f'{kolom_namen[j]}', value='', key=f'input_{i}_{j}')
 
 # URL van de webhook
-webhook_url = st.text_input('Voer de Webhook URL in', 'https://example.com/webhook')
+webhook_url = st.text_input('Voer de Webhook URL in', 'https://cloud.activepieces.com/api/v1/webhooks/gxHbhWT3mdrd8des1W8yA')
 
 # Verzendknop
 if st.button('Verzend Data'):
