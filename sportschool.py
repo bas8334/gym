@@ -75,8 +75,8 @@ naam_sporter = st.text_input('Naam van de sporter', value='')
 for i in range(num_rows):
     cols = st.columns(num_cols)
     
-    # Maak een radio button lijst voor oefeningen
-    selectie = cols[0].radio(f'Kies een oefening {i+1}', unique_oefeningen, key=f'radio_oefening_{i}')
+    # Maak een selectbox voor oefeningen met optie voor vrije invoer
+    selectie = cols[0].selectbox(f'Kies een oefening {i+1}', unique_oefeningen, key=f'select_oefening_{i}')
     
     # Als de gebruiker kiest voor vrije invoer ("Anders, namelijk..."), laat een tekstinvoerveld zien
     if selectie == "Anders, namelijk...":
