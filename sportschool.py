@@ -55,8 +55,8 @@ if df is not None:
 else:
     unique_oefeningen = []
 
-# Voeg een lege optie toe voor de dropdown
-unique_oefeningen.insert(0, "")
+# Voeg een optie toe voor vrije invoer
+unique_oefeningen.append("Anders, namelijk...")
 
 # Aantal rijen en kolommen
 num_rows = 10
@@ -71,32 +71,18 @@ data = pd.DataFrame('', index=range(num_rows), columns=kolom_namen)
 # Naam_sporter invoerveld
 naam_sporter = st.text_input('Naam van de sporter', value='')
 
-# Functie om oefeningen te filteren op basis van gebruikersinvoer
-def filter_oefeningen(input_text, oefeningen_list):
-    if input_text:
-        return [oef for oef in oefeningen_list if isinstance(oef, str) and oef.lower().startswith(input_text.lower())]
-    return oefeningen_list
-
 # Maak invoervelden voor elke cel in de tabel zonder rij-benaming
 for i in range(num_rows):
     cols = st.columns(num_cols)
     
-    # Gebruiker typt een oefening
-    oefening_input = cols[0].text_input(f'Oefening {i+1}', value='', key=f'oefening_input_{i}')
+    # Maak een radio button lijst voor oefeningen
+    selectie = cols[0].radio(f'Kies een oefening {i+1}', unique_oefeningen, key=f'radio_oefening_{i}')
     
-    # Filter de oefeningen op basis van de invoer van de gebruiker
-    filtered_oefeningen = filter_oefeningen(oefening_input, unique_oefeningen)
-    
-    # Combineer het invulveld en de suggesties
-    if filtered_oefeningen:
-        oefening_keuze = cols[0].selectbox(
-            'Selecteer of bevestig je oefening',
-            options=[oefening_input] + filtered_oefeningen,  # Voegt de handmatige invoer toe als eerste optie
-            index=0,  # Standaard op de handmatige invoer
-            key=f'oefening_selectbox_{i}'
-        )
+    # Als de gebruiker kiest voor vrije invoer ("Anders, namelijk..."), laat een tekstinvoerveld zien
+    if selectie == "Anders, namelijk...":
+        oefening_keuze = cols[0].text_input("Voer je eigen oefening in", key=f'oefening_input_{i}')
     else:
-        oefening_keuze = oefening_input  # Als er geen suggesties zijn, gebruik de handmatige invoer
+        oefening_keuze = selectie
     
     # Sla de geselecteerde of ingevoerde oefening op in de data
     data.iloc[i, 0] = oefening_keuze
