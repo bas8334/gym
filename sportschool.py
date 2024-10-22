@@ -55,7 +55,8 @@ if df is not None:
 else:
     unique_oefeningen = []
 
-# Voeg een optie toe voor vrije invoer
+# Voeg een lege optie toe om standaard geen oefening te selecteren
+unique_oefeningen.insert(0, "Selecteer een oefening")
 unique_oefeningen.append("Anders, namelijk...")
 
 # Aantal rijen en kolommen
@@ -75,12 +76,14 @@ naam_sporter = st.text_input('Naam van de sporter', value='')
 for i in range(num_rows):
     cols = st.columns(num_cols)
     
-    # Maak een selectbox voor oefeningen met optie voor vrije invoer
+    # Maak een selectbox voor oefeningen met een lege standaardoptie
     selectie = cols[0].selectbox(f'Kies een oefening {i+1}', unique_oefeningen, key=f'select_oefening_{i}')
     
     # Als de gebruiker kiest voor vrije invoer ("Anders, namelijk..."), laat een tekstinvoerveld zien
     if selectie == "Anders, namelijk...":
         oefening_keuze = cols[0].text_input("Voer je eigen oefening in", key=f'oefening_input_{i}')
+    elif selectie == "Selecteer een oefening":
+        oefening_keuze = None  # Geen oefening geselecteerd
     else:
         oefening_keuze = selectie
     
@@ -99,8 +102,8 @@ if st.button('Verzend Data'):
     # Vervang lege strings ('') met None zodat ze als lege waarden worden behandeld
     data = data.applymap(lambda x: None if x == '' else x)
     
-    # Filter de rijen waarbij de kolom 'Oefening' niet leeg is
-    filtered_data = data[data['Oefening'].notna()].copy()
+    # Filter de rijen waarbij de kolom 'Oefening' niet leeg is en er een waarde is ingevuld
+    filtered_data = data[data['Oefening'].notna() & (data['Oefening'] != 'Selecteer een oefening')].copy()
 
     # Voeg Naam_sporter en Datum kolommen toe aan de gefilterde DataFrame
     filtered_data['Naam_sporter'] = naam_sporter if naam_sporter else None
