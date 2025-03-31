@@ -67,18 +67,22 @@ oefeningen = programmas[programma_keuze]
 
 log_data = []
 
+df_columns = df.columns.tolist() if not df.empty else []
+
 for oef in oefeningen:
     st.subheader(oef)
-    vorige = df[(df['Oefening'] == oef) & (df['Naam_sporter'] == naam_sporter)]
-    vorige['Datum'] = pd.to_datetime(vorige['Datum'], format='%d-%m-%Y', errors='coerce')
-    vorige = vorige.sort_values('Datum', ascending=False).head(1)
-    if not vorige.empty:
-        vorige_sets = []
-        for i in range(5):
-            set_val = vorige.iloc[0].get(f'Set {i+1} (#xKG)', '-')
-            vorige_sets.append(f"Set {i+1}: {set_val}")
-        vorige_datum = vorige.iloc[0]['Datum'].strftime('%d-%m-%Y')
-        st.info("Vorige keer (" + vorige_datum + "): " + ", ".join(vorige_sets))
+
+    if 'Oefening' in df_columns and 'Naam_sporter' in df_columns:
+        vorige = df[(df['Oefening'] == oef) & (df['Naam_sporter'] == naam_sporter)]
+        vorige['Datum'] = pd.to_datetime(vorige['Datum'], format='%d-%m-%Y', errors='coerce')
+        vorige = vorige.sort_values('Datum', ascending=False).head(1)
+        if not vorige.empty:
+            vorige_sets = []
+            for i in range(5):
+                set_val = vorige.iloc[0].get(f'Set {i+1} (#xKG)', '-')
+                vorige_sets.append(f"Set {i+1}: {set_val}")
+            vorige_datum = vorige.iloc[0]['Datum'].strftime('%d-%m-%Y')
+            st.info("Vorige keer (" + vorige_datum + "): " + ", ".join(vorige_sets))
 
     sets = []
     cols = st.columns(5)
