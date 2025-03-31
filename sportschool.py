@@ -30,7 +30,7 @@ programmas = {
         "Super ROM lateral raise",
         "Cable face pull",
         "Pull up",
-        "Free motion \u201csuper man\u201d cable curl",
+        "Free motion super man cable curl",
         "Reverse Nordic curl",
         "Stiff Leg Deadlift",
         "Front foot elevated smith lunge",
@@ -73,4 +73,42 @@ for oef in oefeningen:
     vorige['Datum'] = pd.to_datetime(vorige['Datum'], format='%d-%m-%Y', errors='coerce')
     vorige = vorige.sort_values('Datum', ascending=False).head(1)
     if not vorige.empty:
-        st.info(f"Vorige keer ({vorige.iloc[0]['Datum'].strftime('%d-%m-%Y')}): " +
+        vorige_sets = []
+        for i in range(5):
+            set_val = vorige.iloc[0].get(f'Set {i+1} (#xKG)', '-')
+            vorige_sets.append(f"Set {i+1}: {set_val}")
+        vorige_datum = vorige.iloc[0]['Datum'].strftime('%d-%m-%Y')
+        st.info("Vorige keer (" + vorige_datum + "): " + ", ".join(vorige_sets))
+
+    sets = []
+    cols = st.columns(5)
+    for i in range(5):
+        sets.append(cols[i].text_input(f"Set {i+1} (#xKG)", key=f"{oef}_set_{i}"))
+
+    log_data.append({
+        "Oefening": oef,
+        "Set 1 (#xKG)": sets[0],
+        "Set 2 (#xKG)": sets[1],
+        "Set 3 (#xKG)": sets[2],
+        "Set 4 (#xKG)": sets[3],
+        "Set 5 (#xKG)": sets[4],
+        "Naam_sporter": naam_sporter,
+        "Datum": datetime.now().strftime('%d-%m-%Y')
+    })
+
+# Webhook input en verzenden
+webhook_url = st.text_input("Webhook URL", "https://cloud.activepieces.com/api/v1/webhooks/gxHbhWT3mdrd8des1W8yA")
+
+if st.button("Verzend data"):
+    to_send = [entry for entry in log_data if entry["Oefening"] and naam_sporter]
+    if to_send:
+        try:
+            response = requests.post(webhook_url, json=to_send)
+            if response.status_code == 200:
+                st.success("Data succesvol verzonden!")
+            else:
+                st.error(f"Fout bij verzenden: {response.status_code} - {response.text}")
+        except Exception as e:
+            st.error(f"Verzoek mislukt: {e}")
+    else:
+        st.warning("Geen data om te verzenden.")
