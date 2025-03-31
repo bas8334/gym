@@ -38,6 +38,35 @@ programmas = {
     ]
 }
 
+# Oefening-afbeeldingen (bron: musclewiki.com)
+exercise_images = {
+    "Chest Low incline db press": "https://musclewiki.com/media/uploads/images/db-incline-press-male-front.gif",
+    "Deficit push up": "https://musclewiki.com/media/uploads/images/pushup-male-front.gif",
+    "Seated db lateral raise": "https://musclewiki.com/media/uploads/images/dumbbell-lateral-raise-male-front.gif",
+    "Seated overhead tricep extension": "https://musclewiki.com/media/uploads/images/dumbbell-overhead-tricep-extension-male-front.gif",
+    "Triceps dips": "https://musclewiki.com/media/uploads/images/tricep-dip-male-front.gif",
+    "High bar squat": "https://musclewiki.com/media/uploads/images/barbell-squat-male-front.gif",
+    "Seated leg curl": "https://musclewiki.com/media/uploads/images/seated-leg-curl-male-side.gif",
+    "Sit-back squat": "https://musclewiki.com/media/uploads/images/goblet-squat-male-front.gif",
+    "Barbell Row": "https://musclewiki.com/media/uploads/images/barbell-row-male-front.gif",
+    "Lat prayer": "https://musclewiki.com/media/uploads/images/cable-straight-arm-pulldown-male-front.gif",
+    "Clown Curl": "https://musclewiki.com/media/uploads/images/dumbbell-bicep-curl-male-front.gif",
+    "Incline db curl": "https://musclewiki.com/media/uploads/images/incline-dumbbell-curl-male-front.gif",
+    "Lying skullcrusher": "https://musclewiki.com/media/uploads/images/barbell-skullcrusher-male-front.gif",
+    "Hack squat": "https://musclewiki.com/media/uploads/images/machine-hack-squat-male-side.gif",
+    "Lying leg curl": "https://musclewiki.com/media/uploads/images/lying-leg-curl-male-side.gif",
+    "Glute thrust Machine": "https://musclewiki.com/media/uploads/images/barbell-hip-thrust-male-side.gif",
+    "Flad db fly": "https://musclewiki.com/media/uploads/images/dumbbell-fly-male-front.gif",
+    "Super ROM lateral raise": "https://musclewiki.com/media/uploads/images/cable-lateral-raise-male-side.gif",
+    "Cable face pull": "https://musclewiki.com/media/uploads/images/cable-face-pull-male-front.gif",
+    "Pull up": "https://musclewiki.com/media/uploads/images/pullup-male-front.gif",
+    "Free motion super man cable curl": "https://musclewiki.com/media/uploads/images/cable-curl-male-front.gif",
+    "Reverse Nordic curl": "https://musclewiki.com/media/uploads/images/nordic-hamstring-curl-male-side.gif",
+    "Stiff Leg Deadlift": "https://musclewiki.com/media/uploads/images/barbell-stiff-leg-deadlift-male-side.gif",
+    "Front foot elevated smith lunge": "https://musclewiki.com/media/uploads/images/smith-machine-lunge-male-side.gif",
+    "Standing Calf raise": "https://musclewiki.com/media/uploads/images/standing-calf-raise-male-side.gif"
+}
+
 # Functie om data uit een Google Sheet te halen
 def get_google_sheet_data(spreadsheet_id, sheet_name, api_key):
     url = f'https://sheets.googleapis.com/v4/spreadsheets/{spreadsheet_id}/values/{sheet_name}!A1:Z?alt=json&key={api_key}'
@@ -71,6 +100,10 @@ df_columns = df.columns.tolist() if not df.empty else []
 
 for oef in oefeningen:
     st.subheader(oef)
+
+    # Toon oefening afbeelding indien beschikbaar
+    if oef in exercise_images:
+        st.image(exercise_images[oef], use_column_width=True)
 
     if 'Oefening' in df_columns and 'Naam_sporter' in df_columns:
         vorige = df[(df['Oefening'] == oef) & (df['Naam_sporter'] == naam_sporter)]
