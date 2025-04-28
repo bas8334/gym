@@ -100,10 +100,10 @@ Both options create a deep stretch, a powerful driver for muscle growth."""
 # Afbeeldingen per oefening
 exercise_images = {
     "Incline Dumbbell Press": "https://builtwithscience.com/wp-content/uploads/2025/01/Full-body-workout-plan-workout-1-incline-dumbbell-press-1536x864.webp",
-    "Barbell Squats": "https://musclewiki.com/media/uploads/images/barbell-squat-male-front.gif",
-    "Dumbbell Chest Supported Row": "https://musclewiki.com/media/uploads/images/dumbbell-row-male-side.gif",
-    "Leg Curls": "https://musclewiki.com/media/uploads/images/lying-leg-curl-male-side.gif",
-    "Superset: Biceps And Triceps": "https://musclewiki.com/media/uploads/images/dumbbell-curl-male-front.gif"
+    "Barbell Squats": "https://builtwithscience.com/wp-content/uploads/2025/01/Full-body-workout-plan-workout-1-barbell-squats-1536x864.webp",
+    "Dumbbell Chest Supported Row": "https://builtwithscience.com/wp-content/uploads/2025/01/Full-body-workout-plan-workout-1-dumbbell-chest-supported-row-form-1536x864.webp",
+    "Leg Curls": "https://builtwithscience.com/wp-content/uploads/2025/01/Full-body-workout-plan-workout-1-leg-curls-1536x864.webp",
+    "Superset: Biceps And Triceps": "https://builtwithscience.com/wp-content/uploads/2025/01/Full-body-workout-plan-workout-1-superset-option-2-1536x864.webp"
 }
 
 # Functie om data uit Google Sheets te halen
