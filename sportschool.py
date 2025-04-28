@@ -144,7 +144,7 @@ for tab, programma_naam in zip(tabs, programmas.keys()):
         for oef in oefeningen:
             # Toon afbeelding boven de expander
             if oef in exercise_images:
-                st.image(exercise_images[oef], use_column_width=True)
+                st.image(exercise_images[oef], use_container_width=True)
 
             with st.expander(oef):
                 st.markdown(exercise_descriptions.get(oef, "Geen uitleg beschikbaar."))
