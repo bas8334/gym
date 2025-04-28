@@ -97,6 +97,16 @@ Both options create a deep stretch, a powerful driver for muscle growth."""
 }
 
 # Functie om data uit Google Sheets te halen
+# Afbeeldingen per oefening
+exercise_images = {
+    "Incline Dumbbell Press": "https://builtwithscience.com/wp-content/uploads/2025/01/Full-body-workout-plan-workout-1-incline-dumbbell-press-1536x864.webp",
+    "Barbell Squats": "https://musclewiki.com/media/uploads/images/barbell-squat-male-front.gif",
+    "Dumbbell Chest Supported Row": "https://musclewiki.com/media/uploads/images/dumbbell-row-male-side.gif",
+    "Leg Curls": "https://musclewiki.com/media/uploads/images/lying-leg-curl-male-side.gif",
+    "Superset: Biceps And Triceps": "https://musclewiki.com/media/uploads/images/dumbbell-curl-male-front.gif"
+}
+
+# Functie om data uit Google Sheets te halen
 def get_google_sheet_data(spreadsheet_id, sheet_name, api_key):
     url = f'https://sheets.googleapis.com/v4/spreadsheets/{spreadsheet_id}/values/{sheet_name}!A1:Z?alt=json&key={api_key}'
     try:
@@ -132,6 +142,10 @@ for tab, programma_naam in zip(tabs, programmas.keys()):
         oefeningen = programmas[programma_naam]
 
         for oef in oefeningen:
+            # Toon afbeelding boven de expander
+            if oef in exercise_images:
+                st.image(exercise_images[oef], use_column_width=True)
+
             with st.expander(oef):
                 st.markdown(exercise_descriptions.get(oef, "Geen uitleg beschikbaar."))
             
