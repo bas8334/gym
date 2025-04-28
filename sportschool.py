@@ -134,22 +134,23 @@ for tab, programma_naam in zip(tabs, programmas.keys()):
         for oef in oefeningen:
             with st.expander(oef):
                 st.markdown(exercise_descriptions.get(oef, "Geen uitleg beschikbaar."))
+            
+            sets = []
+            cols = st.columns(5)
+            for i in range(5):
+                sets.append(cols[i].text_input(f"Set {i+1} (#xKG)", key=f"{programma_naam}_{oef}_set_{i}"))
 
-                sets = []
-                cols = st.columns(5)
-                for i in range(5):
-                    sets.append(cols[i].text_input(f"Set {i+1} (#xKG)", key=f"{programma_naam}_{oef}_set_{i}"))
+            log_data.append({
+                "Oefening": oef,
+                "Set 1 (#xKG)": sets[0],
+                "Set 2 (#xKG)": sets[1],
+                "Set 3 (#xKG)": sets[2],
+                "Set 4 (#xKG)": sets[3],
+                "Set 5 (#xKG)": sets[4],
+                "Naam_sporter": naam_sporter,
+                "Datum": datetime.now().strftime('%d-%m-%Y')
+            })
 
-                log_data.append({
-                    "Oefening": oef,
-                    "Set 1 (#xKG)": sets[0],
-                    "Set 2 (#xKG)": sets[1],
-                    "Set 3 (#xKG)": sets[2],
-                    "Set 4 (#xKG)": sets[3],
-                    "Set 5 (#xKG)": sets[4],
-                    "Naam_sporter": naam_sporter,
-                    "Datum": datetime.now().strftime('%d-%m-%Y')
-                })
 # Webhook input en verzenden
 webhook_url = st.text_input("Webhook URL", "https://cloud.activepieces.com/api/v1/webhooks/gxHbhWT3mdrd8des1W8yA")
 
